@@ -9,6 +9,7 @@ import pickle
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
+from ckiptagger import data_utils, construct_dictionary, WS, POS, NER
 
 
 def get_sheet():
@@ -41,20 +42,35 @@ def main():
     sheet = get_sheet()
     result = sheet.values().get(spreadsheetId=SPREADSHEET_ID,
                                 range=RANGE_NAME).execute()
-    values = result.get('values', [])
+    sentence_list = result.get('values', [])
+    sentence_list = [str(s[0]) for s in sentence_list]
 
-    if not values:
-        print('No data found.')
-    else:
-        for row in values:
-            print(row[0])
+    if DEBUG:
+        print(sentence_list)
+
+    # load pre-trained models
+    ws = WS("./ckiptagger_models")
+    pos = POS("./ckiptagger_models")
+    ner = NER("./ckiptagger_models")
+
+    word_sentence_list = ws(
+        sentence_list)#,
+        # sentence_segmentation=True,  # To consider delimiters
+        # segment_delimiter_set={",", "。", ":", "?", "!", ";"})  # This is the defualt set of delimiters
+
+    # recommend_dictionary = dictionary1, # words in this dictionary are encouraged
+    # coerce_dictionary = dictionary2, # words in this dictionary are forced
+    print(word_sentence_list)
+    input("------------")
+    # TODO: write back to spreadsheet.
 
 if __name__ == '__main__':
+    DEBUG = True
     # If modifying these scopes, delete the file token.pickle.
     SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
 
     # The ID and range of a sample spreadsheet.
     SPREADSHEET_ID = '12HLFguNa2jFWDOFP5_UzaAjZ9u5NhPJhUQGr8193WIs'
-    RANGE_NAME = 'datasets!A2:A'
+    RANGE_NAME = 'datasets!A2:A11'
 
     main()
