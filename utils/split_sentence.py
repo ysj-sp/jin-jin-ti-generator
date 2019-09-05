@@ -10,18 +10,8 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
-# If modifying these scopes, delete the file token.pickle.
-SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
 
-# The ID and range of a sample spreadsheet.
-SAMPLE_SPREADSHEET_ID = '12HLFguNa2jFWDOFP5_UzaAjZ9u5NhPJhUQGr8193WIs'
-SAMPLE_RANGE_NAME = 'datasets!A2:A'
-
-
-def main():
-    """Shows basic usage of the Sheets API.
-    Prints values from a sample spreadsheet.
-    """
+def get_sheet():
     creds = None
     # The file token.pickle stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
@@ -42,20 +32,29 @@ def main():
             pickle.dump(creds, token)
 
     service = build('sheets', 'v4', credentials=creds)
-
-    # Call the Sheets API
     sheet = service.spreadsheets()
-    result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID,
-                                range=SAMPLE_RANGE_NAME).execute()
+    return sheet
+
+
+def main():
+    # Call the Sheets API
+    sheet = get_sheet()
+    result = sheet.values().get(spreadsheetId=SPREADSHEET_ID,
+                                range=RANGE_NAME).execute()
     values = result.get('values', [])
 
     if not values:
         print('No data found.')
     else:
-        print('Raw Data')
         for row in values:
-            # Print columns A and E, which correspond to indices 0 and 4.
             print(row[0])
 
 if __name__ == '__main__':
+    # If modifying these scopes, delete the file token.pickle.
+    SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
+
+    # The ID and range of a sample spreadsheet.
+    SPREADSHEET_ID = '12HLFguNa2jFWDOFP5_UzaAjZ9u5NhPJhUQGr8193WIs'
+    RANGE_NAME = 'datasets!A2:A'
+
     main()
