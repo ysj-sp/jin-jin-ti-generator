@@ -17,7 +17,7 @@ from ckiptagger import data_utils, construct_dictionary, WS, POS, NER
 def get_sheet():
   """ helper function to get sheet object.
 
-  This function automatically stores the user's access and refresh tokens 
+  This function automatically stores the user's access and refresh tokens
   after the first time user completes authorization.
   It needs to be deleted when SCOPE changes.
 
@@ -68,7 +68,7 @@ def main():
     input(len(word_sentence_list))
 
   # write back to spreadsheet.
-  updated_range = "datasets!B2:B{}".format(len(word_sentence_list)+1)
+  updated_range = "datasets!B2:B{}".format(len(word_sentence_list) + 1)
   value_input_option = 'RAW'
   value_range_body = {
       "majorDimension": "DIMENSION_UNSPECIFIED",
