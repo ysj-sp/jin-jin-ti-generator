@@ -11,7 +11,7 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
-from ckiptagger import data_utils, construct_dictionary, WS, POS, NER
+from ckiptagger import WS
 
 
 def get_sheet():
