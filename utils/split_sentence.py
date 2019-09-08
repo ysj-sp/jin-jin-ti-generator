@@ -76,13 +76,15 @@ def main():
         "values": word_sentence_list
     }
 
-    request = sheet.values().update(spreadsheetId=SPREADSHEET_ID, range=updated_range,
-                                    valueInputOption=value_input_option, body=value_range_body)
+    request = sheet.values().update(spreadsheetId=SPREADSHEET_ID,
+                                    range=updated_range,
+                                    valueInputOption=value_input_option,
+                                    body=value_range_body)
     try:
         response = None
         response = request.execute()
     except HttpError as identifier:
-        print("Don't forget to delete pickle when chaning scope")
+        print("Don't forget to delete pickle when changing scope")
         print(identifier)
     finally:
         if response is not None:
