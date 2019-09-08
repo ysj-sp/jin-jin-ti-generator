@@ -1,0 +1,3 @@
+# We are using flake8 as our linter, and we can change its config in this file
+[flake8]
+max-line-length = 120
