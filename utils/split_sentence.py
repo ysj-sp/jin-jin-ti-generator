@@ -5,42 +5,19 @@
 
 import os
 import sys
-import pickle
 
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-from google_auth_oauthlib.flow import InstalledAppFlow
-from google.auth.transport.requests import Request
 from ckiptagger import WS
+from get_credentials import get_credentials
 
 
 def get_sheet():
-    """ helper function to get sheet object.
-
-    This function automatically stores the user's access and refresh tokens
-    after the first time user completes authorization.
-    It needs to be deleted when SCOPE changes.
-
-    returns: sheet(object)
     """
-
-    creds = None
-    if os.path.exists('./creds/token.pickle'):
-        with open('./creds/token.pickle', 'rb') as token:
-            creds = pickle.load(token)
-    # If there are no (valid) credentials available, let the user log in.
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                './creds/credentials.json', SCOPES)
-            creds = flow.run_local_server(port=0)
-        # Save the credentials for the next run
-        with open('./creds/token.pickle', 'wb') as token:
-            pickle.dump(creds, token)
-
-    service = build('sheets', 'v4', credentials=creds)
+        helper function to get sheet object.
+        returns: sheet(object)
+    """
+    service = build('sheets', 'v4', credentials=get_credentials('./creds/credentials.json', './creds/token.pickle'))
     sheet = service.spreadsheets()
     return sheet
 
@@ -94,8 +71,6 @@ def main():
 if __name__ == '__main__':
     os.chdir(os.path.dirname(sys.argv[0]))
     DEBUG = False
-    # If modifying these scopes, delete the file token.pickle.
-    SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
     # The ID and range of a sample spreadsheet.
     SPREADSHEET_ID = '12HLFguNa2jFWDOFP5_UzaAjZ9u5NhPJhUQGr8193WIs'
