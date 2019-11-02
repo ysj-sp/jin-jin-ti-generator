@@ -1,3 +1,4 @@
 .vscode
 utils/creds
 utils/ckiptagger_models
+cna.cbow.512d.0.txt
