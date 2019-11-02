@@ -1,6 +1,7 @@
 import os
 import pickle
 
+from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
@@ -32,3 +33,14 @@ def get_credentials(auth_path, token_path):
             pickle.dump(creds, token)
 
     return creds
+
+
+def get_sheet():
+    """
+        helper function to get sheet object.
+        returns: sheet(object)
+    """
+    service = build('sheets', 'v4', credentials=get_credentials('utils/creds/credentials.json',
+                                                                'utils/creds/token.pickle'))
+    sheet = service.spreadsheets()
+    return sheet

@@ -6,20 +6,9 @@
 import os
 import sys
 
-from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from ckiptagger import WS
-from get_credentials import get_credentials
-
-
-def get_sheet():
-    """
-        helper function to get sheet object.
-        returns: sheet(object)
-    """
-    service = build('sheets', 'v4', credentials=get_credentials('./creds/credentials.json', './creds/token.pickle'))
-    sheet = service.spreadsheets()
-    return sheet
+from .sheet import get_sheet
 
 
 def main():
