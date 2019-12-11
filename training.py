@@ -42,13 +42,12 @@ def translated_text_to_index(corpus):
 def new_model(embedding_layer):
     model = keras.Sequential()
     model.add(embedding_layer)
-    # model.add(keras.layers.GRU(16))
     model.add(keras.layers.Bidirectional(keras.layers.LSTM(64)))
     model.add(keras.layers.Dense(100, activation='relu'))
     model.add(keras.layers.Dense(100, activation='relu'))
     model.add(keras.layers.Dense(20, activation='sigmoid'))
 
-    model.compile(optimizer=keras.optimizers.Adam(1e-2),
+    model.compile(optimizer=keras.optimizers.Adam(1e-3),
                   loss='MSE',
                   metrics=['accuracy'])
     return model
@@ -94,16 +93,7 @@ def main():
     model.summary()
 
     model.fit(x=X, y=Y, batch_size=300, epochs=100, validation_split=0.1)
-
-    test_data = [['你', '的', '東西', '就是', '我', '的', '東西']]
-    P = text_to_index(test_data, word2idx)
-    P = keras.preprocessing.sequence.pad_sequences(P, maxlen=20)
-
-    print(P)
-
-    predict = model.predict(P)
-
-    print(predict)
+    model.save('saved_model/my_model')
 
 
 if __name__ == '__main__':
