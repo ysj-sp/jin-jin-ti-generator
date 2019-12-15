@@ -7,6 +7,10 @@ from googletrans import Translator
 
 
 def get_should_translate_index(arr):
+    """
+        function to get index of words that need to be translated
+        return: result(array)
+    """
     result = []
     for i, item in enumerate(arr):
         if item > 0.25:
@@ -33,6 +37,7 @@ def main():
     for i, vocab in enumerate(word_vecs):
         word2idx[vocab] = i + 1
 
+    # Load trained model
     model = keras.models.load_model('saved_model/my_model')
 
     while 1:
@@ -40,17 +45,20 @@ def main():
 
         input_test_data = input("Enter your sentence with Chinese or exit to close application: ")
 
+        # Close application if user type `exit`
         if input_test_data == 'exit':
             break
 
         test_data.append(input_test_data)
 
+        # Load split sentence model
         ws = WS("./utils/data")
         split_test_data = ws(test_data)
 
         T = text_to_index(split_test_data, word2idx)
         T = keras.preprocessing.sequence.pad_sequences(T, maxlen=MAX_LEN)
 
+        # Get prediction from trained model
         predict = model.predict(T)
         should_translate_index = get_should_translate_index(predict[0])
 
