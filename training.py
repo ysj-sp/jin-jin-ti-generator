@@ -5,6 +5,10 @@ from tensorflow import keras
 
 
 def get_sheet_data(sheet, sheet_id, sheet_range):
+    """
+        function to get data from google sheet
+        return: sentence(array)
+    """
     result = sheet.values().get(spreadsheetId=sheet_id,
                                 range=sheet_range).execute()
     sentence_list = result.get('values', [])
@@ -14,6 +18,10 @@ def get_sheet_data(sheet, sheet_id, sheet_range):
 
 
 def text_to_index(corpus, word2idx):
+    """
+        function to replace text to word vector index
+        return: new_corpus(array)
+    """
     new_corpus = []
     for doc in corpus:
         new_doc = []
@@ -27,6 +35,12 @@ def text_to_index(corpus, word2idx):
 
 
 def translated_text_to_index(corpus):
+    """
+        function to replace text to index `1` for words that need to
+        be translated, `0` for words that do not need to be translated
+
+        return: new_corpus(array)
+    """
     new_corpus = []
     for doc in corpus:
         new_doc = []
@@ -40,6 +54,10 @@ def translated_text_to_index(corpus):
 
 
 def new_model(embedding_layer):
+    """
+        function to get new model
+        return: model(keras.Sequential)
+    """
     model = keras.Sequential()
     model.add(embedding_layer)
     model.add(keras.layers.Bidirectional(keras.layers.LSTM(64)))
@@ -58,6 +76,7 @@ def main():
     input_data = get_sheet_data(sheet, SPREADSHEET_ID, 'datasets!B2:B')
     label_data = get_sheet_data(sheet, SPREADSHEET_ID, 'datasets!C2:C')
 
+    # Get word vector
     dim = 0
     word_vecs = {}
     with open('cna.cbow.512d.0.txt') as f:
