@@ -35,36 +35,41 @@ def main():
 
     model = keras.models.load_model('saved_model/my_model')
 
-    test_data = []
+    while 1:
+        test_data = []
 
-    input_test_data = input("Enter your sentence with Chinese: ")
-    test_data.append(input_test_data)
+        input_test_data = input("Enter your sentence with Chinese: ")
 
-    ws = WS("./utils/ckiptagger_models")
-    split_test_data = ws(test_data)
+        if input_test_data == 'exit':
+            break
 
-    T = text_to_index(split_test_data, word2idx)
-    T = keras.preprocessing.sequence.pad_sequences(T, maxlen=MAX_LEN)
+        test_data.append(input_test_data)
 
-    predict = model.predict(T)
-    should_translate_index = get_should_translate_index(predict[0])
+        ws = WS("./utils/data")
+        split_test_data = ws(test_data)
 
-    translate_line = split_test_data[0].copy()
-    translator = Translator()
+        T = text_to_index(split_test_data, word2idx)
+        T = keras.preprocessing.sequence.pad_sequences(T, maxlen=MAX_LEN)
 
-    for index in should_translate_index:
-        target_index = index - MAX_LEN
+        predict = model.predict(T)
+        should_translate_index = get_should_translate_index(predict[0])
 
-        # Handle boundary
-        if target_index < -(len(translate_line)):
-            continue
+        translate_line = split_test_data[0].copy()
+        translator = Translator()
 
-        # Translate target word
-        translated_text = translator.translate(translate_line[index - MAX_LEN], dest="en", src="zh-Tw").text
-        translate_line[index - MAX_LEN] = translated_text
+        for index in should_translate_index:
+            target_index = index - MAX_LEN
 
-    result = ' '.join(translate_line)
-    print(split_test_data[0], result)
+            # Handle boundary
+            if target_index < -(len(translate_line)):
+                continue
+
+            # Translate target word
+            translated_text = translator.translate(translate_line[index - MAX_LEN], dest="en", src="zh-Tw").text
+            translate_line[index - MAX_LEN] = translated_text
+
+        result = ' '.join(translate_line)
+        print(split_test_data[0], result)
 
 
 if __name__ == '__main__':

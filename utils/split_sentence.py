@@ -23,7 +23,7 @@ def main():
         print(sentence_list)
 
     # # load pre-trained models
-    ws = WS("./ckiptagger_models")
+    ws = WS("./data")
 
     word_sentence_list = ws(sentence_list)
     word_sentence_list = [[" ".join(words)] for words in word_sentence_list]
