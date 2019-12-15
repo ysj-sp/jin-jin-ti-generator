@@ -38,7 +38,7 @@ def main():
     while 1:
         test_data = []
 
-        input_test_data = input("Enter your sentence with Chinese: ")
+        input_test_data = input("Enter your sentence with Chinese or exit to close application: ")
 
         if input_test_data == 'exit':
             break
