@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Blueprint
 from predict import get_word_vector_data, get_should_translate_index, get_prediction, get_translated_line
 from tensorflow import keras, Session, get_default_graph
 from tensorflow.python.keras.backend import set_session
@@ -9,7 +9,9 @@ graph = get_default_graph()
 set_session(sess)
 model = keras.models.load_model('saved_model/my_model')
 
+main = Blueprint('main', __name__)
 app = Flask(__name__)
+app.register_blueprint(main)
 
 
 @app.route('/predict', methods=['GET'])
@@ -31,16 +33,11 @@ def response():
     response = {}
 
     if not line:
-        response['Error'] = 'No line found, please send a line.'
+        response['error'] = 'No line found, please send a line.'
     else:
-        response['Message'] = prediction
+        response['prediction'] = prediction
 
     return jsonify(response)
-
-
-@app.route('/')
-def index():
-    return '<h1>Hello World!</h1>'
 
 
 if __name__ == '__main__':
