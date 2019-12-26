@@ -38,6 +38,18 @@ Enter your sentence with Chinese or exit to close application: 我好帥
 exit
 ```
 
+### Open a demo page (locally)
+1. Start `Flask` server
+```
+python api.py
+```
+
+2. Start Client
+```
+cd demo && yarn start
+```
+
+3. Go to `localhost` port 3000
 ### How it works
 
 1. Collect sentence manually add store into google sheet
