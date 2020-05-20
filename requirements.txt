@@ -34,7 +34,7 @@ googletrans==2.4.0
 grpcio==1.23.0
 gsutil==4.46
 h5py==2.10.0
-httplib2==0.13.1
+httplib2==0.18.0
 idna==2.8
 itsdangerous==1.1.0
 Jinja2==2.10.3
