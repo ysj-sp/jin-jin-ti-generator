@@ -9,7 +9,7 @@ chardet==3.0.4
 ckiptagger==0.0.16
 Click==7.0
 crcmod==1.7
-cryptography==2.8
+cryptography==3.2
 Cython==0.29.13
 entrypoints==0.3
 fasteners==0.15
