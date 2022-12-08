@@ -3,7 +3,7 @@ argcomplete==1.10.3
 astor==0.8.0
 boto==2.49.0
 cachetools==3.1.1
-certifi==2019.6.16
+certifi==2022.12.7
 cffi==1.13.2
 chardet==3.0.4
 ckiptagger==0.0.16
